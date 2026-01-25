@@ -10,8 +10,7 @@ export default function App() {
     setMcError("");
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "";
-      const res = await fetch(`${apiUrl}/api/minecraft`);
+      const res = await fetch("/api/minecraft");
       const data = await res.json();
       if (!res.ok || data?.ok === false) {
         throw new Error(data?.error || `HTTP ${res.status}`);

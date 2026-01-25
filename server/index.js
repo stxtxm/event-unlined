@@ -1,6 +1,11 @@
 import express from "express";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
 import { status } from "minecraft-server-util";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -13,6 +18,10 @@ app.use(
   })
 );
 app.use(express.json());
+
+app.get("/api/hello", (req, res) => {
+  res.json({ message: "Hello depuis Express!" });
+});
 
 app.get("/api/minecraft", async (req, res) => {
   const host = req.query.host || process.env.MC_HOST || "event-unlined.gl.joinmc.link";
@@ -48,8 +57,10 @@ app.get("/api/minecraft", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
-  res.json({ status: "ok" });
+app.use(express.static(path.join(__dirname, "../client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
 });
 
 app.listen(port, () => {
