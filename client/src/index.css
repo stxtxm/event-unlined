@@ -1,0 +1,139 @@
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  background: #0b0f0a;
+  color: #eaffea;
+}
+
+.page {
+  padding: 24px;
+}
+
+code {
+  background: rgba(0, 0, 0, 0.35);
+  padding: 2px 6px;
+  border-radius: 0;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.mc-shell {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 16px;
+  background: linear-gradient(180deg, rgba(46, 120, 49, 0.12), rgba(0, 0, 0, 0.1));
+  border: 4px solid #2a2a2a;
+  box-shadow:
+    0 0 0 2px #111 inset,
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.mc-header {
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 2px solid #1a1a1a;
+}
+
+.mc-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mc-icon {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+.mc-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.mc-subtitle {
+  margin-top: 6px;
+  opacity: 0.85;
+  font-size: 12px;
+}
+
+.mc-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 12px 0;
+}
+
+.mc-button {
+  background: linear-gradient(180deg, #3bb54a, #2f8f3b);
+  color: #071b07;
+  border: 2px solid #0c2b0f;
+  padding: 10px 12px;
+  cursor: pointer;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mc-button:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.mc-link {
+  color: #a7ffb1;
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(167, 255, 177, 0.6);
+  padding-bottom: 1px;
+}
+
+.mc-link:hover {
+  border-bottom-style: solid;
+}
+
+.mc-panel {
+  background: rgba(0, 0, 0, 0.35);
+  border: 2px solid #1a1a1a;
+  padding: 12px;
+}
+
+.mc-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.mc-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.mc-row-wide {
+  grid-template-columns: 120px 1fr;
+}
+
+.mc-label {
+  color: #b8ffbf;
+  opacity: 0.9;
+  font-weight: 800;
+}
+
+.mc-value {
+  color: #eaffea;
+}
+
+.mc-error {
+  color: #ffb4b4;
+}
+
+.mc-empty {
+  opacity: 0.85;
+}

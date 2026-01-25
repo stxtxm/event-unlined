@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: minecraft-status-api
+    runtime: docker
+    repo: https://github.com/TON_USERNAME/TON_REPO.git
+    rootDir: server
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: CORS_ORIGIN
+        value: https://minecraft-status-client.onrender.com
+    healthCheckPath: /
+
+  - type: web
+    name: minecraft-status-client
+    runtime: static
+    repo: https://github.com/TON_USERNAME/TON_REPO.git
+    rootDir: client
+    buildCommand: npm install && npm run build
+    publishDir: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://minecraft-status-api.onrender.com
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://minecraft-status-api.onrender.com/api/*
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
