@@ -2,8 +2,8 @@ services:
   - type: web
     name: minecraft-status-api
     runtime: docker
-    repo: https://github.com/TON_USERNAME/TON_REPO.git
-    rootDir: server
+    repo: https://github.com/stxtxm/event-unlined.git
+    rootDir: .
     dockerfilePath: ./Dockerfile
     envVars:
       - key: PORT
@@ -15,7 +15,7 @@ services:
   - type: web
     name: minecraft-status-client
     runtime: static
-    repo: https://github.com/TON_USERNAME/TON_REPO.git
+    repo: https://github.com/stxtxm/event-unlined.git
     rootDir: client
     buildCommand: npm install && npm run build
     publishDir: dist
