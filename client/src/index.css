@@ -10,7 +10,15 @@ body {
 }
 
 .page {
-  padding: 24px;
+  padding: 16px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 12px;
+  }
 }
 
 code {
@@ -31,16 +39,35 @@ code {
     0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
+@media (max-width: 768px) {
+  .mc-shell {
+    padding: 12px;
+    border-width: 2px;
+  }
+}
+
 .mc-header {
   padding: 12px;
   background: rgba(0, 0, 0, 0.35);
   border: 2px solid #1a1a1a;
 }
 
+@media (max-width: 768px) {
+  .mc-header {
+    padding: 8px;
+  }
+}
+
 .mc-header-inner {
   display: flex;
   align-items: center;
   gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .mc-header-inner {
+    gap: 8px;
+  }
 }
 
 .mc-icon {
@@ -51,10 +78,23 @@ code {
   image-rendering: crisp-edges;
 }
 
+@media (max-width: 768px) {
+  .mc-icon {
+    width: 36px;
+    height: 36px;
+  }
+}
+
 .mc-title {
   font-size: 18px;
   font-weight: 800;
   letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .mc-title {
+    font-size: 16px;
+  }
 }
 
 .mc-subtitle {
@@ -63,12 +103,25 @@ code {
   font-size: 12px;
 }
 
+@media (max-width: 768px) {
+  .mc-subtitle {
+    font-size: 11px;
+  }
+}
+
 .mc-actions {
   display: flex;
   gap: 12px;
   align-items: center;
   flex-wrap: wrap;
   padding: 12px 0;
+}
+
+@media (max-width: 768px) {
+  .mc-actions {
+    padding: 8px 0;
+    gap: 8px;
+  }
 }
 
 .mc-button {
@@ -80,6 +133,13 @@ code {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .mc-button {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
 }
 
 .mc-button:disabled {
@@ -104,6 +164,12 @@ code {
   padding: 12px;
 }
 
+@media (max-width: 768px) {
+  .mc-panel {
+    padding: 8px;
+  }
+}
+
 .mc-grid {
   display: grid;
   gap: 10px;
@@ -116,8 +182,21 @@ code {
   align-items: start;
 }
 
+@media (max-width: 768px) {
+  .mc-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
 .mc-row-wide {
   grid-template-columns: 120px 1fr;
+}
+
+@media (max-width: 768px) {
+  .mc-row-wide {
+    grid-template-columns: 1fr;
+  }
 }
 
 .mc-label {
@@ -126,8 +205,21 @@ code {
   font-weight: 800;
 }
 
+@media (max-width: 768px) {
+  .mc-label {
+    font-size: 14px;
+  }
+}
+
 .mc-value {
   color: #eaffea;
+}
+
+@media (max-width: 768px) {
+  .mc-value {
+    font-size: 14px;
+    word-break: break-all;
+  }
 }
 
 .mc-error {

@@ -45,10 +45,7 @@ export default function App() {
           <div className="mc-header-inner">
             <img src="/minecraft.png" alt="Minecraft" className="mc-icon" />
             <div>
-              <div className="mc-title">Minecraft Server Status</div>
-              <div className="mc-subtitle">
-                Refresh auto toutes les <code>15s</code> (et bouton manuel)
-              </div>
+              <div className="mc-title">Server Status</div>
             </div>
           </div>
         </div>

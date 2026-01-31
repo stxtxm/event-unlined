@@ -92,6 +92,7 @@ app.get("/api/minecraft", async (req, res) => {
   }
 });
 
+app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 app.get("*", (req, res) => {
