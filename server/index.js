@@ -30,7 +30,7 @@ let db;
 async function initDbAndGit() {
   // Git pull au démarrage pour récupérer la dernière BDD
   try {
-    await git.pull();
+    await git.pull("origin", "master");
   } catch (e) {
     console.warn("git pull failed (maybe first time):", e.message);
   }
@@ -108,7 +108,7 @@ app.post("/api/minecraft/config", async (req, res) => {
   try {
     await git.add(dbPath);
     await git.commit(`update: minecraft config to ${host}:${port}`);
-    await git.push();
+    await git.push("origin", "master");
   } catch (e) {
     console.error("Git push failed:", e);
     // On continue même si le push échoue (la BDD est à jour localement)
