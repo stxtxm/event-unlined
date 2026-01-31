@@ -9,9 +9,6 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "minecraft-server-util": "^5.4.4",
-    "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7",
-    "simple-git": "^3.25.0"
+    "minecraft-server-util": "^5.4.4"
   }
 }

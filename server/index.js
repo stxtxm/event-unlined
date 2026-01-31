@@ -2,9 +2,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
-import sqlite3 from "sqlite3";
-import { open } from "sqlite";
-import simpleGit from "simple-git";
+import fs from "fs";
 import { status } from "minecraft-server-util";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -22,75 +20,31 @@ app.use(
 );
 app.use(express.json());
 
-const git = simpleGit(__dirname);
-const dbPath = path.join(__dirname, "mc.db");
+const configPath = path.join(__dirname, "mc-config.json");
 
-let db;
+let mcConfig = { host: "ooxga-78-246-210-127.a.free.pinggy.link", port: 38951 };
 
-async function initDbAndGit() {
-  // Synchroniser avec le remote
-  try {
-    await git.fetch();
-    // Essayer de seter upstream si pas déjà fait
-    try {
-      await git.branch(["--set-upstream-to=origin/master", "master"]);
-    } catch {}
-    // Pull pour récupérer la dernière BDD
-    await git.pull("origin", "master");
-  } catch (e) {
-    console.warn("git sync failed (maybe first time):", e.message);
+// Charger la config depuis le fichier au démarrage
+try {
+  const raw = fs.readFileSync(configPath, "utf-8");
+  const parsed = JSON.parse(raw);
+  if (parsed.host && parsed.port) {
+    mcConfig = { host: parsed.host, port: Number(parsed.port) };
   }
-
-  // Init SQLite
-  db = await open({
-    filename: dbPath,
-    driver: sqlite3.Database,
-  });
-  await db.exec(`
-    CREATE TABLE IF NOT EXISTS minecraft_config (
-      id INTEGER PRIMARY KEY CHECK (id = 1),
-      host TEXT NOT NULL,
-      port INTEGER NOT NULL DEFAULT 38951,
-      updated_at INTEGER NOT NULL
-    );
-    INSERT OR IGNORE INTO minecraft_config (id, host, port, updated_at)
-    VALUES (1, 'ooxga-78-246-210-127.a.free.pinggy.link', 38951, unixepoch());
-  `);
-
-  // Si le dépôt n’existe pas encore, l’initialiser
-  try {
-    await git.status();
-  } catch {
-    await git.init();
-    await git.addConfig("user.name", "Render Bot");
-    await git.addConfig("user.email", "bot@render.com");
-  }
-
-  // Ajouter mc.db au suivi Git s’il n’est pas déjà suivi
-  const statusRes = await git.status();
-  if (!statusRes.current.includes("mc.db")) {
-    await git.add(dbPath);
-    await git.commit("init: add mc.db");
-    try {
-      await git.push();
-    } catch (e) {
-      console.warn("git push failed (maybe no remote yet):", e.message);
-    }
-  }
+} catch {
+  // Si le fichier n'existe pas, le créer avec la config par défaut
+  fs.writeFileSync(configPath, JSON.stringify(mcConfig, null, 2) + "\n", "utf-8");
 }
-
-initDbAndGit();
 
 app.get("/api/hello", (req, res) => {
   res.json({ message: "Hello depuis Express!" });
 });
 
-app.get("/api/minecraft/config", async (req, res) => {
-  const cfg = await db.get("SELECT host, port FROM minecraft_config WHERE id = 1");
-  res.json({ ok: true, host: cfg?.host || "ooxga-78-246-210-127.a.free.pinggy.link", port: cfg?.port || 38951 });
+app.get("/api/minecraft/config", (req, res) => {
+  res.json({ ok: true, ...mcConfig });
 });
 
-app.post("/api/minecraft/config", async (req, res) => {
+app.post("/api/minecraft/config", (req, res) => {
   const { url } = req.body;
   if (!url || typeof url !== "string") {
     return res.status(400).json({ ok: false, error: "Paramètre 'url' requis et doit être une chaîne" });
@@ -99,39 +53,21 @@ app.post("/api/minecraft/config", async (req, res) => {
   // Simple parsing host:port ou juste host
   const parts = url.trim().split(":");
   const host = parts[0];
-  const port = parts[1] ? Number(parts[1]) : 25565;
+  const port = parts[1] ? Number(parts[1]) : 38951;
 
   if (!host) {
     return res.status(400).json({ ok: false, error: "URL invalide" });
   }
 
-  await db.run(
-    `UPDATE minecraft_config SET host = ?, port = ?, updated_at = unixepoch() WHERE id = 1`,
-    [host, port]
-  );
+  mcConfig = { host, port };
+  fs.writeFileSync(configPath, JSON.stringify(mcConfig, null, 2) + "\n", "utf-8");
 
-  // Git add/commit/push pour persister
-  try {
-    await git.add(dbPath);
-    await git.commit(`update: minecraft config to ${host}:${port}`);
-    // Premier push : set upstream, ensuite push normal
-    try {
-      await git.push(["--set-upstream", "origin", "master"]);
-    } catch {
-      await git.push("origin", "master");
-    }
-  } catch (e) {
-    console.error("Git push failed:", e);
-    // On continue même si le push échoue (la BDD est à jour localement)
-  }
-
-  res.json({ ok: true, host, port });
+  res.json({ ok: true, ...mcConfig });
 });
 
 app.get("/api/minecraft", async (req, res) => {
-  const cfg = await db.get("SELECT host, port FROM minecraft_config WHERE id = 1");
-  const host = req.query.host || cfg?.host || "ooxga-78-246-210-127.a.free.pinggy.link";
-  const port = Number(req.query.port || cfg?.port || 38951);
+  const host = req.query.host || mcConfig.host;
+  const port = Number(req.query.port || mcConfig.port);
 
   try {
     const result = await status(host, port, {
