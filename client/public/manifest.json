@@ -1,6 +1,6 @@
 {
-  "name": "Event Unlined Server Status",
-  "short_name": "Server Status",
+  "name": "EventUnlined",
+  "short_name": "EventUnlined",
   "description": "Real-time Minecraft server status monitoring",
   "start_url": "/",
   "display": "standalone",
