@@ -22,7 +22,7 @@ app.use(express.json());
 
 const configPath = path.join(__dirname, "mc-config.json");
 
-let mcConfig = { host: "ooxga-78-246-210-127.a.free.pinggy.link", port: 38951 };
+let mcConfig = { host: "event-unlined.gl.joinmc.link", port: 25565 };
 
 // Charger la config depuis le fichier au démarrage
 try {
@@ -31,18 +31,11 @@ try {
   if (parsed.host && parsed.port) {
     mcConfig = { host: parsed.host, port: Number(parsed.port) };
   }
-} catch {
+} catch (error) {
+  console.error("Error reading config file:", error);
   // Si le fichier n'existe pas, le créer avec la config par défaut
   fs.writeFileSync(configPath, JSON.stringify(mcConfig, null, 2) + "\n", "utf-8");
 }
-
-app.get("/api/hello", (req, res) => {
-  res.json({ message: "Hello depuis Express!" });
-});
-
-app.get("/api/minecraft/config", (req, res) => {
-  res.json({ ok: true, ...mcConfig });
-});
 
 app.post("/api/minecraft/config", (req, res) => {
   const { url } = req.body;
@@ -53,7 +46,7 @@ app.post("/api/minecraft/config", (req, res) => {
   // Simple parsing host:port ou juste host
   const parts = url.trim().split(":");
   const host = parts[0];
-  const port = parts[1] ? Number(parts[1]) : 38951;
+  const port = parts[1] ? Number(parts[1]) : 25565;
 
   if (!host) {
     return res.status(400).json({ ok: false, error: "URL invalide" });
