@@ -1,0 +1,27 @@
+{
+  "name": "Event Unlined Server Status",
+  "short_name": "Server Status",
+  "description": "Real-time Minecraft server status monitoring",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e1e1e",
+  "theme_color": "#4caf50",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/minecraft.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/minecraft.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/minecraft.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
