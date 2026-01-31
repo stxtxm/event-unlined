@@ -108,7 +108,12 @@ app.post("/api/minecraft/config", async (req, res) => {
   try {
     await git.add(dbPath);
     await git.commit(`update: minecraft config to ${host}:${port}`);
-    await git.push("origin", "master");
+    // Premier push : set upstream, ensuite push normal
+    try {
+      await git.push(["--set-upstream", "origin", "master"]);
+    } catch {
+      await git.push("origin", "master");
+    }
   } catch (e) {
     console.error("Git push failed:", e);
     // On continue même si le push échoue (la BDD est à jour localement)
@@ -119,8 +124,8 @@ app.post("/api/minecraft/config", async (req, res) => {
 
 app.get("/api/minecraft", async (req, res) => {
   const cfg = await db.get("SELECT host, port FROM minecraft_config WHERE id = 1");
-  const host = req.query.host || cfg?.host || "event-unlined.gl.joinmc.link";
-  const port = Number(req.query.port || cfg?.port || 25565);
+  const host = req.query.host || cfg?.host || "ooxga-78-246-210-127.a.free.pinggy.link";
+  const port = Number(req.query.port || cfg?.port || 38951);
 
   try {
     const result = await status(host, port, {
