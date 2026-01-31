@@ -3,10 +3,10 @@ FROM node:20-alpine
 WORKDIR /app
 
 COPY client/package*.json ./client/
-RUN cd client && npm ci
+RUN cd client && npm install
 
 COPY server/package*.json ./
-RUN npm ci --omit=dev
+RUN npm install --omit=dev
 
 COPY client/ ./client/
 COPY server/ ./server/
