@@ -14,6 +14,13 @@ RUN npm install --omit=dev
 COPY client/ ./client/
 COPY server/ ./server/
 
+# Init git repo and set remote if GIT_REMOTE_URL is provided
+RUN cd server && \
+  git init && \
+  git config user.name "Render Bot" && \
+  git config user.email "bot@render.com" && \
+  if [ -n "$GIT_REMOTE_URL" ]; then git remote add origin $GIT_REMOTE_URL; fi
+
 RUN cd client && npm run build && npm prune --production
 
 WORKDIR /app/server
