@@ -4,6 +4,15 @@ export default function App() {
   const [mcLoading, setMcLoading] = useState(false);
   const [mcData, setMcData] = useState(null);
   const [mcError, setMcError] = useState("");
+  const [mcConfig, setMcConfig] = useState({ host: "", port: 25565 });
+
+  async function loadMinecraftConfig() {
+    try {
+      const res = await fetch("/api/minecraft/config");
+      const data = await res.json();
+      if (data.ok) setMcConfig({ host: data.host, port: data.port });
+    } catch {}
+  }
 
   async function loadMinecraft() {
     setMcLoading(true);
@@ -25,6 +34,7 @@ export default function App() {
   }
 
   useEffect(() => {
+    loadMinecraftConfig();
     loadMinecraft();
 
     const intervalMs = 15000;
@@ -70,6 +80,14 @@ export default function App() {
                 <span className="mc-value">
                   <code>
                     {mcData.host}:{mcData.port}
+                  </code>
+                </span>
+              </div>
+              <div className="mc-row">
+                <span className="mc-label">Config actuelle</span>
+                <span className="mc-value">
+                  <code>
+                    {mcConfig.host}:{mcConfig.port}
                   </code>
                 </span>
               </div>
