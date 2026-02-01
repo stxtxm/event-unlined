@@ -14,12 +14,12 @@ export default function App() {
       const configRes = await fetch("/event-unlined/server-config.json");
       const config = await configRes.json();
       
-      // Use a different API for Minecraft server status
-      const apiUrl = `https://mcapi.us/server/status?ip=${config.host}&port=${config.port}`;
+      // Use API that supports CORS
+      const apiUrl = `https://api.minetools.eu/ping/${config.host}/${config.port}`;
       const res = await fetch(apiUrl);
       const data = await res.json();
       
-      if (!data.online) {
+      if (data.error) {
         setMcData({
           host: config.host,
           port: config.port,
@@ -37,12 +37,12 @@ export default function App() {
       setMcData({
         host: config.host,
         port: config.port,
-        version: data.server?.name || "Inconnue",
+        version: data.version || "Inconnue",
         players: {
-          online: data.players?.now || 0,
+          online: data.players?.online || 0,
           max: data.players?.max || 0,
         },
-        motd: data.server?.motd || "Aucun MOTD",
+        motd: data.description || "Aucun MOTD",
         latency: data.latency || "-",
       });
     } catch (e) {
