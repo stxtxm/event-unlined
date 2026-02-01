@@ -7,6 +7,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    base: mode === "production" ? "/event-unlined/" : "/",
     server: {
       proxy: {
         "/api": {
@@ -17,6 +18,10 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       __VITE_API_URL__: JSON.stringify(env.VITE_API_URL || ""),
+    },
+    build: {
+      outDir: "dist",
+      assetsDir: "assets",
     },
   };
 });
