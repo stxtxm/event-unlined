@@ -14,25 +14,36 @@ export default function App() {
       const configRes = await fetch("/event-unlined/server-config.json");
       const config = await configRes.json();
       
-      // Use a public API for Minecraft server status
-      const apiUrl = `https://api.mcsrvstat.us/3/${config.host}:${config.port}`;
+      // Use a different API for Minecraft server status
+      const apiUrl = `https://mcapi.us/server/status?ip=${config.host}&port=${config.port}`;
       const res = await fetch(apiUrl);
       const data = await res.json();
       
-      if (!res.ok || data.ip === false) {
-        throw new Error("Serveur hors ligne ou inaccessible");
+      if (!data.online) {
+        setMcData({
+          host: config.host,
+          port: config.port,
+          version: "Hors ligne",
+          players: {
+            online: 0,
+            max: 0,
+          },
+          motd: "Serveur hors ligne",
+          latency: "-",
+        });
+        return;
       }
       
       setMcData({
         host: config.host,
         port: config.port,
-        version: data.version,
+        version: data.server?.name || "Inconnue",
         players: {
-          online: data.players?.online || 0,
+          online: data.players?.now || 0,
           max: data.players?.max || 0,
         },
-        motd: data.motd?.clean || data.motd?.raw || "",
-        latency: Math.floor(Math.random() * 50) + 10, // Fake latency since we can't measure it
+        motd: data.server?.motd || "Aucun MOTD",
+        latency: data.latency || "-",
       });
     } catch (e) {
       setMcError(e?.message ?? String(e));
