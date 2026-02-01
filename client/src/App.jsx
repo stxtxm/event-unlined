@@ -11,7 +11,7 @@ export default function App() {
 
     try {
       // Load server config
-      const configRes = await fetch("/server-config.json");
+      const configRes = await fetch("/event-unlined/server-config.json");
       const config = await configRes.json();
       
       // Use a public API for Minecraft server status
@@ -60,7 +60,7 @@ export default function App() {
       <div className="mc-shell">
         <div className="mc-header">
           <div className="mc-header-inner">
-            <img src="/minecraft.png" alt="Minecraft" className="mc-icon" />
+            <img src="/event-unlined/minecraft.png" alt="Minecraft" className="mc-icon" />
             <div>
               <div className="mc-title">Server Status</div>
             </div>
