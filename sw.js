@@ -1,8 +1,9 @@
 const CACHE_NAME = "event-unlined-v1";
 const urlsToCache = [
-  "/",
-  "/minecraft.png",
-  "/manifest.json"
+  "/event-unlined/",
+  "/event-unlined/eventunlined-logo.svg",
+  "/event-unlined/manifest.json",
+  "/event-unlined/server-config.json"
 ];
 
 self.addEventListener("install", (event) => {
