@@ -19,7 +19,7 @@ export default function App() {
       const res = await fetch(apiUrl);
       const data = await res.json();
       
-      if (data.error) {
+      if (data.error || !data.players) {
         setMcData({
           host: config.host,
           port: config.port,
@@ -37,13 +37,13 @@ export default function App() {
       setMcData({
         host: config.host,
         port: config.port,
-        version: data.version || "Inconnue",
+        version: typeof data.version === 'string' ? data.version : (data.version?.name || "Inconnue"),
         players: {
           online: data.players?.online || 0,
           max: data.players?.max || 0,
         },
-        motd: data.description || "Aucun MOTD",
-        latency: data.latency || "-",
+        motd: typeof data.description === 'string' ? data.description : (data.description?.text || "Aucun MOTD"),
+        latency: data.latency ? `${Math.round(data.latency)}ms` : "-",
       });
     } catch (e) {
       setMcError(e?.message ?? String(e));
@@ -56,7 +56,7 @@ export default function App() {
   useEffect(() => {
     loadMinecraft();
 
-    const intervalMs = 15000;
+    const intervalMs = 30000;
     const id = setInterval(() => {
       loadMinecraft();
     }, intervalMs);
@@ -73,15 +73,9 @@ export default function App() {
           <div className="mc-header-inner">
             <img src="/event-unlined/minecraft.png" alt="Minecraft" className="mc-icon" />
             <div>
-              <div className="mc-title">Server Status</div>
+              <div className="mc-title">Event-Unlined</div>
             </div>
           </div>
-        </div>
-
-        <div className="mc-actions">
-          <button className="mc-button" onClick={loadMinecraft} disabled={mcLoading}>
-            {mcLoading ? "Ping…" : "Rafraîchir"}
-          </button>
         </div>
 
         <div className="mc-panel">
@@ -91,47 +85,38 @@ export default function App() {
             </div>
           ) : mcData ? (
             <div className="mc-grid">
-              <div className="mc-row">
-                <span className="mc-label">Serveur</span>
-                <span className="mc-value">
-                  <code>
-                    {mcData.host}:{mcData.port}
-                  </code>
-                </span>
+              <div className="mc-server-info">
+                <div className="mc-server-name">
+                  {mcData.port === 25565 ? mcData.host : `${mcData.host}:${mcData.port}`}
+                </div>
               </div>
-              <div className="mc-row">
-                <span className="mc-label">Version</span>
-                <span className="mc-value">
-                  <code>{mcData.version || "?"}</code>
-                </span>
-              </div>
-              <div className="mc-row">
-                <span className="mc-label">Joueurs</span>
-                <span className="mc-value">
-                  <code>
-                    {mcData.players?.online ?? "?"}/{mcData.players?.max ?? "?"}
-                  </code>
-                </span>
-              </div>
-              <div className="mc-row">
-                <span className="mc-label">Latence</span>
-                <span className="mc-value">
-                  <code>{mcData.latency ?? "?"}ms</code>
-                </span>
-              </div>
-              <div className="mc-row mc-row-wide">
-                <span className="mc-label">MOTD</span>
-                <span className="mc-value">
-                  <code>
-                    {typeof mcData.motd === "string"
-                      ? mcData.motd
-                      : mcData.motd?.clean || mcData.motd?.raw || "?"}
-                  </code>
-                </span>
+              <div className="mc-stats-grid">
+                <div className="mc-stat-card">
+                  <div className="mc-stat-label">Version</div>
+                  <div className="mc-stat-value">{mcData.version}</div>
+                </div>
+                <div className="mc-stat-card">
+                  <div className="mc-stat-label">Joueurs</div>
+                  <div className="mc-stat-value">{mcData.players?.online ?? "?"}/{mcData.players?.max ?? "?"}</div>
+                </div>
+                <div className="mc-stat-card">
+                  <div className="mc-stat-label">Latence</div>
+                  <div className="mc-stat-value">{mcData.latency ?? "?"}</div>
+                </div>
+                <div className="mc-stat-card">
+                  <div className="mc-stat-label">MOTD</div>
+                  <div className="mc-stat-value">
+                    <code>
+                      {typeof mcData.motd === "string"
+                        ? mcData.motd
+                        : mcData.motd?.clean || mcData.motd?.raw || "?"}
+                    </code>
+                  </div>
+                </div>
               </div>
             </div>
           ) : (
-            <div className="mc-empty">(Pas de données pour l’instant)</div>
+            <div className="mc-empty">(Pas de données pour l'instant)</div>
           )}
         </div>
       </div>

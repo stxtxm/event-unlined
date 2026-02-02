@@ -1,0 +1,40 @@
+<svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4caf50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2e7d32;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#eaffea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8ffbf;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background cube -->
+  <rect x="4" y="4" width="48" height="48" rx="8" fill="url(#logoGradient)" />
+  
+  <!-- Minecraft-style pixelated E -->
+  <g transform="translate(12, 14)">
+    <!-- Vertical bar -->
+    <rect x="0" y="0" width="6" height="28" fill="#eaffea" />
+    <!-- Top bar -->
+    <rect x="0" y="0" width="20" height="6" fill="#eaffea" />
+    <!-- Middle bar -->
+    <rect x="0" y="11" width="16" height="6" fill="#eaffea" />
+    <!-- Bottom bar -->
+    <rect x="0" y="22" width="20" height="6" fill="#eaffea" />
+  </g>
+  
+  <!-- Minecraft-style U -->
+  <g transform="translate(24, 14)">
+    <!-- Left bar -->
+    <rect x="0" y="0" width="6" height="28" fill="#eaffea" />
+    <!-- Bottom bar -->
+    <rect x="0" y="22" width="20" height="6" fill="#eaffea" />
+    <!-- Right bar -->
+    <rect x="14" y="0" width="6" height="28" fill="#eaffea" />
+  </g>
+  
+  <!-- Small underline accent -->
+  <rect x="12" y="44" width="20" height="2" fill="url(#textGradient)" opacity="0.8" />
+</svg>
