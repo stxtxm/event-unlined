@@ -17,15 +17,19 @@
 body {
   margin: 0;
   font-family: 'VT323', 'Courier New', monospace;
-  background-image: url('/event-unlined/dirt-background.webp');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: repeat;
+  background: linear-gradient(135deg, #3a2f1f 0%, #4a3c28 50%, #3a2f1f 100%);
+  background-size: 400% 400%;
+  animation: retroGradient 15s ease infinite;
   color: var(--text-primary);
   min-height: 100vh;
   line-height: 1.4;
   position: relative;
+}
+
+@keyframes retroGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 body::before {
@@ -36,20 +40,21 @@ body::before {
   right: 0;
   bottom: 0;
   background: 
-    /* Subtle overlay for better readability */
+    /* Retro scanlines effect */
     repeating-linear-gradient(
       0deg,
       transparent,
-      transparent 15px,
-      rgba(0,0,0,0.1) 15px,
-      rgba(0,0,0,0.1) 16px
+      transparent 2px,
+      rgba(0,0,0,0.1) 2px,
+      rgba(0,0,0,0.1) 4px
     ),
+    /* Subtle grid pattern */
     repeating-linear-gradient(
       90deg,
       transparent,
-      transparent 15px,
-      rgba(0,0,0,0.1) 15px,
-      rgba(0,0,0,0.1) 16px
+      transparent 20px,
+      rgba(255,255,255,0.02) 20px,
+      rgba(255,255,255,0.02) 21px
     );
   pointer-events: none;
   z-index: 1;
